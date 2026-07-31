@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tesla OAuth callback</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    code, pre { background: #f4f4f4; padding: 0.2rem 0.4rem; border-radius: 4px; word-break: break-all; }
+    pre { padding: 1rem; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Tesla OAuth callback</h1>
+  <p id="status">Redirecting to local OpenClaw listener…</p>
+  <pre id="debug"></pre>
+  <script>
+    (function () {
+      var q = window.location.search || '';
+      var hash = window.location.hash || '';
+      document.getElementById('debug').textContent = 'query: ' + q + '\nhash: ' + hash;
+      // Prefer localhost handoff if CLI is listening
+      var local = 'http://localhost:8765/callback' + q + hash;
+      document.getElementById('status').innerHTML =
+        'If you are not redirected, copy this URL into the terminal helper, or ensure the OAuth CLI is running:<br><code>' +
+        local + '</code>';
+      try {
+        window.location.replace(local);
+      } catch (e) {
+        document.getElementById('status').textContent = 'Could not redirect: ' + e;
+      }
+    })();
+  </script>
+</body>
+</html>
